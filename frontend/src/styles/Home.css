@@ -1,0 +1,56 @@
+/* Home Page Styles */
+.home-container {
+    text-align: center;
+    padding: 30px;
+    background-color: #1a202c; /* Dark background */
+    min-height: 100vh;
+    color: white;
+  }
+  
+  /* Loader */
+  .loading-text {
+    color: #a0aec0; /* Gray */
+    font-size: 1.2rem;
+  }
+  
+  /* Card Styling */
+  .nasa-card {
+    background: #2d3748; /* Dark Gray */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    margin: 20px auto;
+    text-align: center;
+  }
+  
+  /* Image Styling */
+  .nasa-image {
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.2);
+    margin-top: 15px;
+    width: 30%;
+  }
+  
+  /* Title */
+  .nasa-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  
+  /* Date */
+  .nasa-date {
+    color: #a0aec0;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .own{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* Explanation */
+  .nasa-description {
+    color: #cbd5e0;
+    font-size: 1rem;
+  }
+  

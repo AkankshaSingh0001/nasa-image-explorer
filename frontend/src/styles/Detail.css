@@ -1,0 +1,59 @@
+.detail-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .error-text, .loading-text {
+    font-size: 1.5rem;
+    color: gray;
+  }
+  
+  .detail-card {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  }
+  
+  .title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .date {
+    color: gray;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .image {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .description {
+    color: lightgray;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  
+  .favorite-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 15px;
+  }
+  
+  .favorite-button:hover {
+    background-color: #ff1a1a;
+  }
+  
