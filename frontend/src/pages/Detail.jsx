@@ -7,9 +7,9 @@ const Detail = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
-    axios.get(`http://localhost:5000/detail/${id}`)
+    axios.get(`${API_BASE_URL}/detail/${id}`)
       .then(response => setData(response.data))
       .catch(err => setError("Error fetching details"));
   }, [id]);
