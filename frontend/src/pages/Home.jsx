@@ -5,13 +5,15 @@ import "../styles/Home.css"; // Import the CSS file
 const Home = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const today = new Date().toISOString().split("T")[0];
         const NASA_API_KEY = "pMYdgXJERHJGFpUUuX6ObBAtVUvcGwfs1xFxLfhJ"; // Replace with your NASA API Key
-
+        
         // 🔹 Fetch today's NASA data
         const response = await axios.get(
           `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
@@ -20,14 +22,14 @@ const Home = () => {
 
         // ✅ Check if data is already saved before saving it
         const checkResponse = await axios.get(
-          `http://localhost:5000/getPastData`
+          `${API_BASE_URL}/getPastData`
         );
         const existingData = checkResponse.data.find(
           (item) => item.date === today
         );
 
         if (!existingData) {
-          await axios.post("http://localhost:5000/saveData", response.data);
+          await axios.post(`${API_BASE_URL}/saveData`, response.data);
           console.log("✅ Data saved successfully!");
         } else {
           console.log("⚠️ Data already exists in the database.");
