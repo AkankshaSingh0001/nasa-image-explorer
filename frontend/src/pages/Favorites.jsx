@@ -6,10 +6,11 @@ import "../styles/Favorites.css";
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   // ✅ Fetch Favorite Data
   useEffect(() => {
-    axios.get("http://localhost:5000/favorites")
+    axios.get(`${API_BASE_URL}/favorites`)
       .then(response => setFavorites(response.data))
       .catch(error => console.error("Error fetching favorites:", error));
   }, []);
@@ -17,7 +18,7 @@ const Favorites = () => {
   // ✅ Remove from Favorites
   const removeFromFavorites = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/favorites/${id}`);
+      await axios.delete(`${API_BASE_URL}/favorites/${id}`);
       setFavorites((prevFavorites) => prevFavorites.filter(item => item._id !== id));
     } catch (error) {
       console.error("Error removing favorite:", error);
