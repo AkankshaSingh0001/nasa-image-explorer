@@ -6,7 +6,6 @@ const Home = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
-  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchData = async () => {
