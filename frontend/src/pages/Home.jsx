@@ -7,24 +7,39 @@ const Home = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    const NASA_API_KEY = "pMYdgXJERHJGFpUUuX6ObBAtVUvcGwfs1xFxLfhJ"; // 🔹 Replace with your NASA API Key
+    const fetchData = async () => {
+      try {
+        const today = new Date().toISOString().split("T")[0];
+        const NASA_API_KEY = "pMYdgXJERHJGFpUUuX6ObBAtVUvcGwfs1xFxLfhJ"; // Replace with your NASA API Key
 
-    // Fetch today's NASA data from API
-    axios.get(`https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`)
-      .then(response => {
+        // 🔹 Fetch today's NASA data
+        const response = await axios.get(
+          `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
+        );
         setData(response.data);
 
-        // Store today's data in MongoDB
-        axios.post("http://localhost:5000/saveData", response.data)
-          .then(() => console.log("✅ Data saved successfully!"))
-          .catch(error => console.error("❌ Error saving data:", error));
-      })
-      .catch(error => {
-        console.error("❌ Error fetching data:", error);
+        // ✅ Check if data is already saved before saving it
+        const checkResponse = await axios.get(
+          `http://localhost:5000/getPastData`
+        );
+        const existingData = checkResponse.data.find(
+          (item) => item.date === today
+        );
+
+        if (!existingData) {
+          await axios.post("http://localhost:5000/saveData", response.data);
+          console.log("✅ Data saved successfully!");
+        } else {
+          console.log("⚠️ Data already exists in the database.");
+        }
+      } catch (error) {
+        console.error("❌ Error fetching or saving data:", error);
         setError("Failed to load NASA data. Please try again.");
-      });
-  }, []);
+      }
+    };
+
+    fetchData();
+  }, []); // ✅ Runs only ONCE when component mounts
 
   return (
     <div className="home-container">

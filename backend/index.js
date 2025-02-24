@@ -10,9 +10,10 @@ app.use(express.json());
 
 
 // Use your MongoDB connection string (Replace <password> and <dbname>)
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/nasadb"; 
+const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/nasadb";
+const dburl="mongodb+srv://admin:admin123@cluster0.dcs4e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
-mongoose.connect(MONGO_URI, {
+mongoose.connect(dburl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -26,6 +27,9 @@ const favoriteSchema = new mongoose.Schema({
   url: String,
   explanation: String,
 });
+
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+axios.get(`${REACT_APP_API_URL}/getPastData`)
 
 const Favorite = mongoose.model("Favorite", favoriteSchema);
 
@@ -55,21 +59,29 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/saveData", async (req, res) => {
-    try {
+  try {
       const { date } = req.body;
+
+      // 🔹 Check if the data for that date already exists
       const existing = await NasaData.findOne({ date });
-      if (existing) return res.status(400).send("Data already saved");
-  
+      if (existing) {
+          console.log("⚠️ Data already exists, skipping save.");
+          return res.status(400).send("Data already saved");
+      }
+
+      // ✅ Save new data only if it does not exist
       const newData = new NasaData(req.body);
       await newData.save();
       res.send("Data saved successfully!");
-    } catch (err) {
+  } catch (err) {
+      console.error("❌ Error saving data:", err.message);
       res.status(500).send(err.message);
-    }
-  });
+  }
+});
+
   
   // Fetch Past Data from MongoDB
-  app.get("/getPastData", async (req, res) => {
+  app.get(`${REACT_APP_API_URL}/getPastData`, async (req, res) => {
     try {
       const pastData = await NasaData.find().sort({ date: -1 });
       console.log("Fetched past data:", pastData); // ✅ Debugging log
@@ -133,3 +145,7 @@ app.post("/saveData", async (req, res) => {
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+
+// mongodb+srv://admin:admin123@cluster0.dcs4e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
