@@ -7,15 +7,16 @@ const PastData = () => {
   const [pastData, setPastData] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const navigate = useNavigate();
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   // ✅ Fetch past data
   useEffect(() => {
-    axios.get("http://localhost:5000/getPastData")
+    axios.get(`${API_BASE_URL}/getPastData`)
       .then(response => setPastData(response.data))
       .catch(error => console.error("Error fetching past data:", error));
 
     // ✅ Fetch favorites on load
-    axios.get("http://localhost:5000/favorites")
+    axios.get(`${API_BASE_URL}/favorites`)
       .then(response => setFavorites(response.data.map(fav => fav.originalId)))
       .catch(error => console.error("Error fetching favorites:", error));
   }, []);
@@ -34,7 +35,7 @@ const PastData = () => {
         explanation: item.explanation,
       };
 
-      await axios.post("http://localhost:5000/favorites", favoriteData);
+      await axios.post(`${API_BASE_URL}/favorites`, favoriteData);
       setFavorites([...favorites, item._id]); // ✅ Update state
     } catch (error) {
       console.error("Error adding to favorites:", error);
