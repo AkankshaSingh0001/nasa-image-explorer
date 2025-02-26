@@ -9,22 +9,22 @@ const PastData = () => {
   const navigate = useNavigate();
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-  // ✅ Fetch past data
+ 
   useEffect(() => {
     axios.get(`${API_BASE_URL}/getPastData`)
       .then(response => setPastData(response.data))
       .catch(error => console.error("Error fetching past data:", error));
 
-    // ✅ Fetch favorites on load
+  
     axios.get(`${API_BASE_URL}/favorites`)
       .then(response => setFavorites(response.data.map(fav => fav.originalId)))
       .catch(error => console.error("Error fetching favorites:", error));
   }, []);
 
-  // ✅ Check if item is in favorites
+
   const isFavorite = (id) => favorites.includes(id);
 
-  // ✅ Add to favorites
+ 
   const addToFavorites = async (item) => {
     try {
       const favoriteData = {
@@ -56,11 +56,11 @@ const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
                 <img src={item.url} alt={item.title} className="image" />
                 <p className="description">{item.explanation.slice(0, 100)}...</p>
               </div>
-              {/* ✅ Change button style dynamically */}
+              {}
               <button
                 className={`favorite-button ${isFavorite(item._id) ? "added" : ""}`}
                 onClick={() => addToFavorites(item)}
-                disabled={isFavorite(item._id)} // Prevent duplicate clicks
+                disabled={isFavorite(item._id)} 
               >
                 {isFavorite(item._id) ? "✅ Added to Favorites" : "⭐ Add to Favorites"}
               </button>
