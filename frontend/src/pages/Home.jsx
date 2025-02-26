@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/Home.css"; // Import the CSS file
+import "../styles/Home.css"; 
 
 const Home = () => {
   const [data, setData] = useState(null);
@@ -11,15 +11,15 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const today = new Date().toISOString().split("T")[0];
-        const NASA_API_KEY = "pMYdgXJERHJGFpUUuX6ObBAtVUvcGwfs1xFxLfhJ"; // Replace with your NASA API Key
+        const NASA_API_KEY = "pMYdgXJERHJGFpUUuX6ObBAtVUvcGwfs1xFxLfhJ"; 
         
-        // 🔹 Fetch today's NASA data
+       
         const response = await axios.get(
           `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
         );
         setData(response.data);
 
-        // ✅ Check if data is already saved before saving it
+        
         const checkResponse = await axios.get(
           `${API_BASE_URL}/getPastData`
         );
@@ -40,7 +40,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, []); // ✅ Runs only ONCE when component mounts
+  }, []); 
 
   return (
     <div className="home-container">
