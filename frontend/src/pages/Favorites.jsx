@@ -8,14 +8,14 @@ const Favorites = () => {
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-  // ✅ Fetch Favorite Data
+  
   useEffect(() => {
     axios.get(`${API_BASE_URL}/favorites`)
       .then(response => setFavorites(response.data))
       .catch(error => console.error("Error fetching favorites:", error));
   }, []);
 
-  // ✅ Remove from Favorites
+  
   const removeFromFavorites = async (id) => {
     try {
       await axios.delete(`${API_BASE_URL}/favorites/${id}`);
