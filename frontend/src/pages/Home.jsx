@@ -8,38 +8,56 @@ const Home = () => {
   const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       try {
         const today = new Date().toISOString().split("T")[0];
         const NASA_API_KEY = "pMYdgXJERHJGFpUUuX6ObBAtVUvcGwfs1xFxLfhJ"; 
         
-       
+        const checkResponse = await axios.get(`${API_BASE_URL}/getPastData`);
+        const existingData = checkResponse.data.find(item => item.date === today);
+  
+        if (existingData) {
+            console.log("⚠ Using saved data.");
+            if (isMounted) setData(existingData);
+                return;
+        }      
+        
         const response = await axios.get(
           `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`
         );
         setData(response.data);
 
-        
-        const checkResponse = await axios.get(
-          `${API_BASE_URL}/getPastData`
-        );
-        const existingData = checkResponse.data.find(
-          (item) => item.date === today
-        );
+        if (isMounted) setData(response.data)
 
-        if (!existingData) {
-          await axios.post(`${API_BASE_URL}/saveData`, response.data);
-          console.log("✅ Data saved successfully!");
-        } else {
-          console.log("⚠️ Data already exists in the database.");
-        }
-      } catch (error) {
-        console.error("❌ Error fetching or saving data:", error);
-        setError("Failed to load NASA data. Please try again.");
-      }
+        await axios.post(`${API_BASE_URL}/saveData`, response.data);
+        console.log(" Data saved successfully!");
+      
+      }catch (error) {
+                console.error("Error fetching or saving data:", error);
+                if (!data) setError("Failed to load NASA data. Please try again.");
+            }
+      //   const checkResponse = await axios.get(
+      //     `${API_BASE_URL}/getPastData`
+      //   );
+      //   const existingData = checkResponse.data.find(
+      //     (item) => item.date === today
+      //   );
+
+      //   if (!existingData) {
+      //     await axios.post(`${API_BASE_URL}/saveData`, response.data);
+      //     console.log("✅ Data saved successfully!");
+      //   } else {
+      //     console.log("⚠️ Data already exists in the database.");
+      //   }
+      // } catch (error) {
+      //   console.error("❌ Error fetching or saving data:", error);
+      //   setError("Failed to load NASA data. Please try again.");
+      // }
     };
 
     fetchData();
+    return () => { isMounted = false; };
   }, []); 
 
   return (
